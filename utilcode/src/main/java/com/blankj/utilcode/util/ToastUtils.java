@@ -1,8 +1,10 @@
 package com.blankj.utilcode.util;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.os.Looper;
@@ -11,14 +13,13 @@ import android.support.annotation.DrawableRes;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
+import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.TextViewCompat;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import java.lang.ref.WeakReference;
 
 /**
  * <pre>
@@ -33,9 +34,7 @@ public final class ToastUtils {
     private static final int     COLOR_DEFAULT = 0xFEFFFFFF;
     private static final Handler HANDLER       = new Handler(Looper.getMainLooper());
 
-    private static Toast               sToast;
-    private static WeakReference<View> sViewWeakReference;
-    private static int sLayoutId  = -1;
+    private static Toast sToast;
     private static int gravity    = Gravity.CENTER_HORIZONTAL | Gravity.BOTTOM;
     private static int xOffset    = 0;
     private static int yOffset    = (int) (64 * Utils.getApp().getResources().getDisplayMetrics().density + 0.5);
@@ -51,8 +50,8 @@ public final class ToastUtils {
      * 设置吐司位置
      *
      * @param gravity 位置
-     * @param xOffset x偏移
-     * @param yOffset y偏移
+     * @param xOffset x 偏移
+     * @param yOffset y 偏移
      */
     public static void setGravity(final int gravity, final int xOffset, final int yOffset) {
         ToastUtils.gravity = gravity;
@@ -99,7 +98,7 @@ public final class ToastUtils {
     /**
      * 安全地显示短时吐司
      *
-     * @param resId 资源Id
+     * @param resId 资源 Id
      */
     public static void showShort(@StringRes final int resId) {
         show(resId, Toast.LENGTH_SHORT);
@@ -108,7 +107,7 @@ public final class ToastUtils {
     /**
      * 安全地显示短时吐司
      *
-     * @param resId 资源Id
+     * @param resId 资源 Id
      * @param args  参数
      */
     public static void showShort(@StringRes final int resId, final Object... args) {
@@ -137,7 +136,7 @@ public final class ToastUtils {
     /**
      * 安全地显示长时吐司
      *
-     * @param resId 资源Id
+     * @param resId 资源 Id
      */
     public static void showLong(@StringRes final int resId) {
         show(resId, Toast.LENGTH_LONG);
@@ -146,7 +145,7 @@ public final class ToastUtils {
     /**
      * 安全地显示长时吐司
      *
-     * @param resId 资源Id
+     * @param resId 资源 Id
      * @param args  参数
      */
     public static void showLong(@StringRes final int resId, final Object... args) {
@@ -210,10 +209,11 @@ public final class ToastUtils {
                 cancel();
                 sToast = Toast.makeText(Utils.getApp(), text, duration);
                 // solve the font of toast
-                TextView tvMessage = (TextView) sToast.getView().findViewById(android.R.id.message);
+                TextView tvMessage = sToast.getView().findViewById(android.R.id.message);
                 TextViewCompat.setTextAppearance(tvMessage, android.R.style.TextAppearance);
                 tvMessage.setTextColor(msgColor);
-                setBgAndGravity();
+                sToast.setGravity(gravity, xOffset, yOffset);
+                setBg(tvMessage);
                 sToast.show();
             }
         });
@@ -227,36 +227,53 @@ public final class ToastUtils {
                 sToast = new Toast(Utils.getApp());
                 sToast.setView(view);
                 sToast.setDuration(duration);
-                setBgAndGravity();
+                sToast.setGravity(gravity, xOffset, yOffset);
+                setBg();
                 sToast.show();
             }
         });
     }
 
-    private static void setBgAndGravity() {
+    private static void setBg() {
         View toastView = sToast.getView();
         if (bgResource != -1) {
             toastView.setBackgroundResource(bgResource);
         } else if (bgColor != COLOR_DEFAULT) {
             Drawable background = toastView.getBackground();
-            background.setColorFilter(new PorterDuffColorFilter(bgColor, PorterDuff.Mode.SRC_IN));
+            if (background != null) {
+                background.setColorFilter(
+                        new PorterDuffColorFilter(bgColor, PorterDuff.Mode.SRC_IN)
+                );
+            } else {
+                ViewCompat.setBackground(toastView, new ColorDrawable(bgColor));
+            }
         }
-        sToast.setGravity(gravity, xOffset, yOffset);
+    }
+
+    private static void setBg(final TextView tvMsg) {
+        View toastView = sToast.getView();
+        if (bgResource != -1) {
+            toastView.setBackgroundResource(bgResource);
+            tvMsg.setBackgroundColor(Color.TRANSPARENT);
+        } else if (bgColor != COLOR_DEFAULT) {
+            Drawable tvBg = toastView.getBackground();
+            Drawable msgBg = tvMsg.getBackground();
+            if (tvBg != null && msgBg != null) {
+                tvBg.setColorFilter(new PorterDuffColorFilter(bgColor, PorterDuff.Mode.SRC_IN));
+                tvMsg.setBackgroundColor(Color.TRANSPARENT);
+            } else if (tvBg != null) {
+                tvBg.setColorFilter(new PorterDuffColorFilter(bgColor, PorterDuff.Mode.SRC_IN));
+            } else if (msgBg != null) {
+                msgBg.setColorFilter(new PorterDuffColorFilter(bgColor, PorterDuff.Mode.SRC_IN));
+            } else {
+                toastView.setBackgroundColor(bgColor);
+            }
+        }
     }
 
     private static View getView(@LayoutRes final int layoutId) {
-        if (sLayoutId == layoutId) {
-            if (sViewWeakReference != null) {
-                final View toastView = sViewWeakReference.get();
-                if (toastView != null) {
-                    return toastView;
-                }
-            }
-        }
-        LayoutInflater inflate = (LayoutInflater) Utils.getApp().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        final View toastView = inflate.inflate(layoutId, null);
-        sViewWeakReference = new WeakReference<>(toastView);
-        sLayoutId = layoutId;
-        return toastView;
+        LayoutInflater inflate =
+                (LayoutInflater) Utils.getApp().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        return inflate != null ? inflate.inflate(layoutId, null) : null;
     }
 }

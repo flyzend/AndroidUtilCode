@@ -5,7 +5,7 @@ You should copy the following classes which you want to use in your project.
 
 ## APIs
 
-* ### About Clipboard→[ClipboardUtils.java][clipboard.java]→[Test][clipboard.test]
+* ### About Clipboard -> [ClipboardUtils.java][clipboard.java] -> [Test][clipboard.test]
 ```
 copyText
 getText
@@ -15,7 +15,7 @@ copyIntent
 getIntent
 ```
 
-* ### About Location→[LocationUtils.java][location.java]→[Demo][location.demo]
+* ### About Location -> [LocationUtils.java][location.java] -> [Demo][location.demo]
 ```
 isGpsEnabled
 isLocationEnabled
@@ -30,7 +30,7 @@ isBetterLocation
 isSameProvider
 ```
 
-* ### About Pinyin→[PinyinUtils.java][pinyin.java]→[Demo][pinyin.demo]
+* ### About Pinyin -> [PinyinUtils.java][pinyin.java] -> [Demo][pinyin.demo]
 ```
 ccs2Pinyin
 ccs2Pinyin
@@ -40,7 +40,7 @@ getSurnamePinyin
 getSurnameFirstLetter
 ```
 
-* ### About ThreadPool→[ThreadPoolUtils.java][thread_pool.java]
+* ### About ThreadPool -> [ThreadPoolUtils.java][thread_pool.java]
 ```
 ThreadPoolUtils
 execute
@@ -64,9 +64,9 @@ scheduleWithFixedDelay
 
 
 [location.java]: https://github.com/Blankj/AndroidUtilCode/blob/master/subutil/src/main/java/com/blankj/subutil/util/LocationUtils.java
-[location.demo]: https://github.com/Blankj/AndroidUtilCode/blob/master/app/src/main/java/com/blankj/androidutilcode/sub/location/LocationActivity.java
+[location.demo]: https://github.com/Blankj/AndroidUtilCode/blob/master/app/src/main/java/com/blankj/androidutilcode/feature/sub/location/LocationActivity.java
 
 [pinyin.java]: https://github.com/Blankj/AndroidUtilCode/blob/master/subutil/src/main/java/com/blankj/subutil/util/PinyinUtils.java
-[pinyin.demo]: https://github.com/Blankj/AndroidUtilCode/blob/master/app/src/main/java/com/blankj/androidutilcode/sub/pinyin/PinyinActivity.java
+[pinyin.demo]: https://github.com/Blankj/AndroidUtilCode/blob/master/app/src/main/java/com/blankj/androidutilcode/feature/sub/pinyin/PinyinActivity.java
 
 [thread_pool.java]: https://github.com/Blankj/AndroidUtilCode/blob/master/subutil/src/main/java/com/blankj/subutil/util/ThreadPoolUtils.java

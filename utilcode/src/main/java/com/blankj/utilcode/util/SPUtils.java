@@ -15,7 +15,7 @@ import java.util.Set;
  *     author: Blankj
  *     blog  : http://blankj.com
  *     time  : 2016/08/02
- *     desc  : SP相关工具类
+ *     desc  : SP 相关工具类
  * </pre>
  */
 @SuppressLint("ApplySharedPref")
@@ -25,7 +25,7 @@ public final class SPUtils {
     private SharedPreferences sp;
 
     /**
-     * 获取SP实例
+     * 获取 SP 实例
      *
      * @return {@link SPUtils}
      */
@@ -34,9 +34,9 @@ public final class SPUtils {
     }
 
     /**
-     * 获取SP实例
+     * 获取 SP 实例
      *
-     * @param spName sp名
+     * @param spName sp 名
      * @return {@link SPUtils}
      */
     public static SPUtils getInstance(String spName) {
@@ -54,7 +54,7 @@ public final class SPUtils {
     }
 
     /**
-     * SP中写入String
+     * SP 中写入 String
      *
      * @param key   键
      * @param value 值
@@ -64,14 +64,16 @@ public final class SPUtils {
     }
 
     /**
-     * SP中写入String
+     * SP 中写入 String
      *
      * @param key      键
      * @param value    值
      * @param isCommit {@code true}: {@link SharedPreferences.Editor#commit()}<br>
      *                 {@code false}: {@link SharedPreferences.Editor#apply()}
      */
-    public void put(@NonNull final String key, @NonNull final String value, final boolean isCommit) {
+    public void put(@NonNull final String key,
+                    @NonNull final String value,
+                    final boolean isCommit) {
         if (isCommit) {
             sp.edit().putString(key, value).commit();
         } else {
@@ -80,7 +82,7 @@ public final class SPUtils {
     }
 
     /**
-     * SP中读取String
+     * SP 中读取 String
      *
      * @param key 键
      * @return 存在返回对应值，不存在返回默认值{@code ""}
@@ -90,7 +92,7 @@ public final class SPUtils {
     }
 
     /**
-     * SP中读取String
+     * SP 中读取 String
      *
      * @param key          键
      * @param defaultValue 默认值
@@ -101,7 +103,7 @@ public final class SPUtils {
     }
 
     /**
-     * SP中写入int
+     * SP 中写入 int
      *
      * @param key   键
      * @param value 值
@@ -111,7 +113,7 @@ public final class SPUtils {
     }
 
     /**
-     * SP中写入int
+     * SP 中写入 int
      *
      * @param key      键
      * @param value    值
@@ -127,7 +129,7 @@ public final class SPUtils {
     }
 
     /**
-     * SP中读取int
+     * SP 中读取 int
      *
      * @param key 键
      * @return 存在返回对应值，不存在返回默认值-1
@@ -137,7 +139,7 @@ public final class SPUtils {
     }
 
     /**
-     * SP中读取int
+     * SP 中读取 int
      *
      * @param key          键
      * @param defaultValue 默认值
@@ -148,7 +150,7 @@ public final class SPUtils {
     }
 
     /**
-     * SP中写入long
+     * SP 中写入 long
      *
      * @param key   键
      * @param value 值
@@ -158,7 +160,7 @@ public final class SPUtils {
     }
 
     /**
-     * SP中写入long
+     * SP 中写入 long
      *
      * @param key      键
      * @param value    值
@@ -174,7 +176,7 @@ public final class SPUtils {
     }
 
     /**
-     * SP中读取long
+     * SP 中读取 long
      *
      * @param key 键
      * @return 存在返回对应值，不存在返回默认值-1
@@ -184,7 +186,7 @@ public final class SPUtils {
     }
 
     /**
-     * SP中读取long
+     * SP 中读取 long
      *
      * @param key          键
      * @param defaultValue 默认值
@@ -195,7 +197,7 @@ public final class SPUtils {
     }
 
     /**
-     * SP中写入float
+     * SP 中写入 float
      *
      * @param key   键
      * @param value 值
@@ -205,7 +207,7 @@ public final class SPUtils {
     }
 
     /**
-     * SP中写入float
+     * SP 中写入 float
      *
      * @param key      键
      * @param value    值
@@ -221,7 +223,7 @@ public final class SPUtils {
     }
 
     /**
-     * SP中读取float
+     * SP 中读取 float
      *
      * @param key 键
      * @return 存在返回对应值，不存在返回默认值-1
@@ -231,7 +233,7 @@ public final class SPUtils {
     }
 
     /**
-     * SP中读取float
+     * SP 中读取 float
      *
      * @param key          键
      * @param defaultValue 默认值
@@ -242,7 +244,7 @@ public final class SPUtils {
     }
 
     /**
-     * SP中写入boolean
+     * SP 中写入 boolean
      *
      * @param key   键
      * @param value 值
@@ -252,7 +254,7 @@ public final class SPUtils {
     }
 
     /**
-     * SP中写入boolean
+     * SP 中写入 boolean
      *
      * @param key      键
      * @param value    值
@@ -268,7 +270,7 @@ public final class SPUtils {
     }
 
     /**
-     * SP中读取boolean
+     * SP 中读取 boolean
      *
      * @param key 键
      * @return 存在返回对应值，不存在返回默认值{@code false}
@@ -278,7 +280,7 @@ public final class SPUtils {
     }
 
     /**
-     * SP中读取boolean
+     * SP 中读取 boolean
      *
      * @param key          键
      * @param defaultValue 默认值
@@ -289,7 +291,7 @@ public final class SPUtils {
     }
 
     /**
-     * SP中写入String集合
+     * SP 中写入 String 集合
      *
      * @param key    键
      * @param values 值
@@ -299,14 +301,16 @@ public final class SPUtils {
     }
 
     /**
-     * SP中写入String集合
+     * SP 中写入 String 集合
      *
      * @param key      键
      * @param values   值
      * @param isCommit {@code true}: {@link SharedPreferences.Editor#commit()}<br>
      *                 {@code false}: {@link SharedPreferences.Editor#apply()}
      */
-    public void put(@NonNull final String key, @NonNull final Set<String> values, final boolean isCommit) {
+    public void put(@NonNull final String key,
+                    @NonNull final Set<String> values,
+                    final boolean isCommit) {
         if (isCommit) {
             sp.edit().putStringSet(key, values).commit();
         } else {
@@ -315,7 +319,7 @@ public final class SPUtils {
     }
 
     /**
-     * SP中读取StringSet
+     * SP 中读取 StringSet
      *
      * @param key 键
      * @return 存在返回对应值，不存在返回默认值{@code Collections.<String>emptySet()}
@@ -325,27 +329,28 @@ public final class SPUtils {
     }
 
     /**
-     * SP中读取StringSet
+     * SP 中读取 StringSet
      *
      * @param key          键
      * @param defaultValue 默认值
      * @return 存在返回对应值，不存在返回默认值{@code defaultValue}
      */
-    public Set<String> getStringSet(@NonNull final String key, @NonNull final Set<String> defaultValue) {
+    public Set<String> getStringSet(@NonNull final String key,
+                                    @NonNull final Set<String> defaultValue) {
         return sp.getStringSet(key, defaultValue);
     }
 
     /**
-     * SP中获取所有键值对
+     * SP 中获取所有键值对
      *
-     * @return Map对象
+     * @return Map 对象
      */
     public Map<String, ?> getAll() {
         return sp.getAll();
     }
 
     /**
-     * SP中是否存在该key
+     * SP 中是否存在该 key
      *
      * @param key 键
      * @return {@code true}: 存在<br>{@code false}: 不存在
@@ -355,7 +360,7 @@ public final class SPUtils {
     }
 
     /**
-     * SP中移除该key
+     * SP 中移除该 key
      *
      * @param key 键
      */
@@ -364,7 +369,7 @@ public final class SPUtils {
     }
 
     /**
-     * SP中移除该key
+     * SP 中移除该 key
      *
      * @param key      键
      * @param isCommit {@code true}: {@link SharedPreferences.Editor#commit()}<br>
@@ -379,14 +384,14 @@ public final class SPUtils {
     }
 
     /**
-     * SP中清除所有数据
+     * SP 中清除所有数据
      */
     public void clear() {
         clear(false);
     }
 
     /**
-     * SP中清除所有数据
+     * SP 中清除所有数据
      *
      * @param isCommit {@code true}: {@link SharedPreferences.Editor#commit()}<br>
      *                 {@code false}: {@link SharedPreferences.Editor#apply()}
