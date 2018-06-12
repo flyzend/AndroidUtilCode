@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.TextView;
 
@@ -24,13 +25,13 @@ import java.util.List;
  *     author: Blankj
  *     blog  : http://blankj.com
  *     time  : 2018/01/01
- *     desc  : Permission 工具类 Demo
+ *     desc  : demo about PermissionUtils
  * </pre>
  */
 public class PermissionActivity extends BaseBackActivity {
 
     TextView tvAboutPermission;
-    String permissions;
+    String   permissions;
 
     public static void start(Context context) {
         Intent starter = new Intent(context, PermissionActivity.class);
@@ -38,7 +39,7 @@ public class PermissionActivity extends BaseBackActivity {
     }
 
     @Override
-    public void initData(Bundle bundle) {
+    public void initData(@Nullable Bundle bundle) {
 
     }
 
@@ -48,7 +49,7 @@ public class PermissionActivity extends BaseBackActivity {
     }
 
     @Override
-    public void initView(Bundle savedInstanceState, View view) {
+    public void initView(Bundle savedInstanceState, View contentView) {
         getToolBar().setTitle(getString(R.string.demo_permission));
 
         tvAboutPermission = findViewById(R.id.tv_about_permission);
@@ -78,10 +79,10 @@ public class PermissionActivity extends BaseBackActivity {
     public void onWidgetClick(View view) {
         switch (view.getId()) {
             case R.id.btn_open_app_settings:
-                PermissionUtils.openAppSettings();
+                PermissionUtils.launchAppDetailsSettings();
                 break;
             case R.id.btn_request_calendar:
-                PermissionUtils.permission(PermissionConstants.CALENDAR)
+                PermissionUtils.permission(PermissionConstants.PHONE, PermissionConstants.STORAGE)
                         .rationale(new PermissionUtils.OnRationaleListener() {
                             @Override
                             public void rationale(final ShouldRequest shouldRequest) {
@@ -92,6 +93,7 @@ public class PermissionActivity extends BaseBackActivity {
                             @Override
                             public void onGranted(List<String> permissionsGranted) {
                                 updateAboutPermission();
+                                LogUtils.d(permissionsGranted);
                             }
 
                             @Override
@@ -123,6 +125,7 @@ public class PermissionActivity extends BaseBackActivity {
                             @Override
                             public void onGranted(List<String> permissionsGranted) {
                                 updateAboutPermission();
+                                LogUtils.d(permissionsGranted);
                             }
 
                             @Override

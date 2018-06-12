@@ -3,28 +3,38 @@ package com.blankj.androidutilcode.feature.core.app;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.TextView;
 
 import com.blankj.androidutilcode.Config;
 import com.blankj.androidutilcode.R;
 import com.blankj.androidutilcode.base.BaseBackActivity;
-import com.blankj.androidutilcode.helper.AssertHelper;
 import com.blankj.androidutilcode.helper.PermissionHelper;
 import com.blankj.utilcode.util.AppUtils;
+import com.blankj.utilcode.util.FileUtils;
+import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.SpanUtils;
 import com.blankj.utilcode.util.ToastUtils;
+import com.blankj.utilcode.util.Utils;
 
 /**
  * <pre>
  *     author: Blankj
  *     blog  : http://blankj.com
  *     time  : 2016/10/13
- *     desc  : App 工具类 Demo
+ *     desc  : demo about AppUtils
  * </pre>
  */
 
 public class AppActivity extends BaseBackActivity {
+
+    private final OnReleasedListener listener = new OnReleasedListener() {
+        @Override
+        public void onReleased() {
+            AppUtils.installApp(Config.TEST_APK_PATH);
+        }
+    };
 
     public static void start(Context context) {
         Intent starter = new Intent(context, AppActivity.class);
@@ -32,8 +42,18 @@ public class AppActivity extends BaseBackActivity {
     }
 
     @Override
-    public void initData(Bundle bundle) {
+    public void initData(@Nullable Bundle bundle) {
+        AppUtils.registerAppStatusChangedListener(this, new Utils.OnAppStatusChangedListener() {
+            @Override
+            public void onForeground() {
+                ToastUtils.showShort("foreground");
+            }
 
+            @Override
+            public void onBackground() {
+                ToastUtils.showShort("background");
+            }
+        });
     }
 
     @Override
@@ -42,7 +62,7 @@ public class AppActivity extends BaseBackActivity {
     }
 
     @Override
-    public void initView(Bundle savedInstanceState, View view) {
+    public void initView(Bundle savedInstanceState, View contentView) {
         getToolBar().setTitle(getString(R.string.demo_app));
 
         findViewById(R.id.btn_install_app).setOnClickListener(this);
@@ -50,16 +70,23 @@ public class AppActivity extends BaseBackActivity {
         findViewById(R.id.btn_uninstall_app).setOnClickListener(this);
         findViewById(R.id.btn_uninstall_app_silent).setOnClickListener(this);
         findViewById(R.id.btn_launch_app).setOnClickListener(this);
+        findViewById(R.id.btn_relaunch_app).setOnClickListener(this);
         findViewById(R.id.btn_exit_app).setOnClickListener(this);
-        findViewById(R.id.btn_get_app_details_settings).setOnClickListener(this);
+        findViewById(R.id.btn_launch_app_details_settings).setOnClickListener(this);
         TextView tvAboutApp = findViewById(R.id.tv_about_app);
         tvAboutApp.setText(new SpanUtils()
-                .append("app icon: ").appendImage(AppUtils.getAppIcon(), SpanUtils.ALIGN_CENTER).appendLine()
-                .appendLine(AppUtils.getAppInfo().toString())
                 .appendLine("isAppRoot: " + AppUtils.isAppRoot())
                 .appendLine("isAppDebug: " + AppUtils.isAppDebug())
-                .appendLine("AppSignatureSHA1: " + AppUtils.getAppSignatureSHA1())
-                .append("isAppForeground: " + AppUtils.isAppForeground())
+                .appendLine("isAppSystem: " + AppUtils.isAppSystem())
+                .appendLine("isAppForeground: " + AppUtils.isAppForeground())
+                .append("getAppIcon: ").appendImage(AppUtils.getAppIcon(), SpanUtils.ALIGN_CENTER)
+                .appendLine()
+                .appendLine("getAppPackageName: " + AppUtils.getAppPackageName())
+                .appendLine("getAppName: " + AppUtils.getAppName())
+                .appendLine("getAppPath: " + AppUtils.getAppPath())
+                .appendLine("getAppVersionName: " + AppUtils.getAppVersionName())
+                .appendLine("getAppVersionCode: " + AppUtils.getAppVersionCode())
+                .append("getAppSignatureSHA1: " + AppUtils.getAppSignatureSHA1())
                 .create());
     }
 
@@ -72,27 +99,24 @@ public class AppActivity extends BaseBackActivity {
     public void onWidgetClick(View view) {
         switch (view.getId()) {
             case R.id.btn_install_app:
-                if (AppUtils.isInstallApp(Config.TEST_PKG)) {
+                if (AppUtils.isAppInstalled(Config.TEST_PKG)) {
                     ToastUtils.showShort(R.string.app_install_tips);
                 } else {
                     PermissionHelper.requestStorage(new PermissionHelper.OnPermissionGrantedListener() {
                         @Override
                         public void onPermissionGranted() {
-                            AssertHelper.releaseInstallApk(new AssertHelper.OnReleasedListener() {
-                                @Override
-                                public void onReleased() {
-                                    AppUtils.installApp(
-                                            Config.TEST_APK_PATH,
-                                            "com.blankj.androidutilcode.provider"
-                                    );
-                                }
-                            });
+                            if (!FileUtils.isFileExists(Config.TEST_APK_PATH)) {
+                                new ReleaseInstallApkTask(listener).execute();
+                            } else {
+                                listener.onReleased();
+                                LogUtils.d("test apk existed.");
+                            }
                         }
                     });
                 }
                 break;
             case R.id.btn_install_app_silent:
-                if (AppUtils.isInstallApp(Config.TEST_PKG)) {
+                if (AppUtils.isAppInstalled(Config.TEST_PKG)) {
                     ToastUtils.showShort(R.string.app_install_tips);
                 } else {
                     if (AppUtils.installAppSilent(Config.TEST_APK_PATH)) {
@@ -103,14 +127,14 @@ public class AppActivity extends BaseBackActivity {
                 }
                 break;
             case R.id.btn_uninstall_app:
-                if (AppUtils.isInstallApp(Config.TEST_PKG)) {
+                if (AppUtils.isAppInstalled(Config.TEST_PKG)) {
                     AppUtils.uninstallApp(Config.TEST_PKG);
                 } else {
                     ToastUtils.showShort(R.string.app_uninstall_tips);
                 }
                 break;
             case R.id.btn_uninstall_app_silent:
-                if (AppUtils.isInstallApp(Config.TEST_PKG)) {
+                if (AppUtils.isAppInstalled(Config.TEST_PKG)) {
                     if (AppUtils.uninstallAppSilent(Config.TEST_PKG, false)) {
                         ToastUtils.showShort(R.string.uninstall_successfully);
                     } else {
@@ -123,12 +147,21 @@ public class AppActivity extends BaseBackActivity {
             case R.id.btn_launch_app:
                 AppUtils.launchApp(this.getPackageName());
                 break;
+            case R.id.btn_relaunch_app:
+                AppUtils.relaunchApp();
+                break;
+            case R.id.btn_launch_app_details_settings:
+                AppUtils.launchAppDetailsSettings();
+                break;
             case R.id.btn_exit_app:
                 AppUtils.exitApp();
                 break;
-            case R.id.btn_get_app_details_settings:
-                AppUtils.getAppDetailsSettings();
-                break;
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        AppUtils.unregisterAppStatusChangedListener(this);
+        super.onDestroy();
     }
 }

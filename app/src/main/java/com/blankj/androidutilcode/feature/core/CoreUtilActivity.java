@@ -3,6 +3,7 @@ package com.blankj.androidutilcode.feature.core;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.view.View;
 
 import com.blankj.androidutilcode.R;
@@ -20,6 +21,8 @@ import com.blankj.androidutilcode.feature.core.network.NetworkActivity;
 import com.blankj.androidutilcode.feature.core.permission.PermissionActivity;
 import com.blankj.androidutilcode.feature.core.phone.PhoneActivity;
 import com.blankj.androidutilcode.feature.core.process.ProcessActivity;
+import com.blankj.androidutilcode.feature.core.reflect.ReflectActivity;
+import com.blankj.androidutilcode.feature.core.resource.ResourceActivity;
 import com.blankj.androidutilcode.feature.core.screen.ScreenActivity;
 import com.blankj.androidutilcode.feature.core.sdcard.SDCardActivity;
 import com.blankj.androidutilcode.feature.core.snackbar.SnackbarActivity;
@@ -32,7 +35,7 @@ import com.blankj.androidutilcode.feature.core.toast.ToastActivity;
  *     author: Blankj
  *     blog  : http://blankj.com
  *     time  : 2016/09/29
- *     desc  : MainActivity
+ *     desc  :
  * </pre>
  */
 public class CoreUtilActivity extends BaseBackActivity {
@@ -43,7 +46,7 @@ public class CoreUtilActivity extends BaseBackActivity {
     }
 
     @Override
-    public void initData(Bundle bundle) {
+    public void initData(@Nullable Bundle bundle) {
 
     }
 
@@ -53,7 +56,7 @@ public class CoreUtilActivity extends BaseBackActivity {
     }
 
     @Override
-    public void initView(Bundle savedInstanceState, View view) {
+    public void initView(Bundle savedInstanceState, View contentView) {
         getToolBar().setTitle(getString(R.string.core_util));
     }
 
@@ -125,6 +128,14 @@ public class CoreUtilActivity extends BaseBackActivity {
 
     public void processClick(View view) {
         ProcessActivity.start(this);
+    }
+
+    public void reflectClick(View view) {
+        ReflectActivity.start(this);
+    }
+
+    public void resourceClick(View view) {
+        ResourceActivity.start(this);
     }
 
     public void screenClick(View view) {

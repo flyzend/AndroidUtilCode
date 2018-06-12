@@ -23,7 +23,7 @@ import static org.junit.Assert.assertTrue;
  *     author: Blankj
  *     blog  : http://blankj.com
  *     time  : 2017/12/24
- *     desc  : ObjectUtils 单元测试
+ *     desc  : test ObjectUtils
  * </pre>
  */
 @RunWith(RobolectricTestRunner.class)
@@ -31,7 +31,7 @@ import static org.junit.Assert.assertTrue;
 public class ObjectUtilsTest {
 
     @Test
-    public void isEmpty() throws Exception {
+    public void isEmpty() {
         StringBuilder sb = new StringBuilder("");
         StringBuilder sb1 = new StringBuilder(" ");
         String string = "";
@@ -79,7 +79,7 @@ public class ObjectUtilsTest {
     }
 
     @Test
-    public void equals() throws Exception {
+    public void equals() {
         assertTrue(ObjectUtils.equals(1, 1));
         assertTrue(ObjectUtils.equals("str", "str"));
         assertTrue(ObjectUtils.equals(null, null));

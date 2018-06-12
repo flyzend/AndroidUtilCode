@@ -2,13 +2,13 @@
 
 Gradle:
 ```groovy
-compile 'com.blankj:utilcode:1.11.1'
+implementation 'com.blankj:utilcode:1.16.4'
 ```
 
 
 ## How to use
 
-```
+```java
 // init it in the function of onCreate in ur Application
 Utils.init(application);
 ```
@@ -16,11 +16,7 @@ Utils.init(application);
 
 ## Proguard
 
-```
--keep class com.blankj.utilcode.** { *; }
--keepclassmembers class com.blankj.utilcode.** { *; }
--dontwarn com.blankj.utilcode.**
-```
+U needn't do anything, because I add `consumerProguardFiles 'proguard-rules.pro'` in build.gradle.
 
 
 ## APIs
@@ -29,6 +25,7 @@ Utils.init(application);
 ```
 isActivityExists
 startActivity
+startActivityForResult
 startActivities
 startHomeActivity
 getActivityList
@@ -44,30 +41,31 @@ finishAllActivitiesExceptNewest
 
 * ### About App -> [AppUtils.java][app.java] -> [Demo][app.demo]
 ```
-isInstallApp
+registerAppStatusChangedListener
+unregisterAppStatusChangedListener
 installApp
 installAppSilent
 uninstallApp
 uninstallAppSilent
+isAppInstalled
 isAppRoot
+isAppDebug
+isAppSystem
+isAppForeground
 launchApp
+relaunchApp
+launchAppDetailsSettings
 exitApp
-getAppPackageName
-getAppDetailsSettings
-getAppName
 getAppIcon
+getAppPackageName
+getAppName
 getAppPath
 getAppVersionName
 getAppVersionCode
-isSystemApp
-isAppDebug
 getAppSignature
 getAppSignatureSHA1
-isAppForeground
-getForegroundApp
 getAppInfo
 getAppsInfo
-cleanAppData
 ```
 
 * ### About Bar -> [BarUtils.java][bar.java] -> [Demo][bar.demo]
@@ -75,6 +73,7 @@ cleanAppData
 getStatusBarHeight
 setStatusBarVisibility
 isStatusBarVisible
+setStatusBarLightMode
 addMarginTopEqualStatusBarHeight
 subtractMarginTopEqualStatusBarHeight
 setStatusBarColor
@@ -86,25 +85,27 @@ setNotificationBarVisibility
 getNavBarHeight
 setNavBarVisibility
 setNavBarImmersive
+setNavBarColor
+getNavBarColor
 isNavBarVisible
 ```
 
 * ### About Cache -> [CacheUtils.java][cache.java] -> [Test][cache.test]
 ```
 getInstance
-put
-getBytes
-getString
-getJSONObject
-getJSONArray
-getBitmap
-getDrawable
-getParcelable
-getSerializable
-getCacheSize
-getCacheCount
-remove
-clear
+Instance.put
+Instance.getBytes
+Instance.getString
+Instance.getJSONObject
+Instance.getJSONArray
+Instance.getBitmap
+Instance.getDrawable
+Instance.getParcelable
+Instance.getSerializable
+Instance.getCacheSize
+Instance.getCacheCount
+Instance.remove
+Instance.clear
 ```
 
 * ### About Clean -> [CleanUtils.java][clean.java] -> [Demo][clean.demo]
@@ -115,7 +116,7 @@ cleanInternalDbs
 cleanInternalDbByName
 cleanInternalSp
 cleanExternalCache
-cleanCustomCache
+cleanCustomDir
 ```
 
 * ### About Close -> [CloseUtils.java][close.java]
@@ -126,13 +127,13 @@ closeIOQuietly
 
 * ### About Convert -> [ConvertUtils.java][convert.java] -> [Test][convert.test]
 ```
+bytes2Bits, bits2Bytes
+bytes2Chars, chars2Bytes
 bytes2HexString, hexString2Bytes
-chars2Bytes, bytes2Chars
 memorySize2Byte, byte2MemorySize
 byte2FitMemorySize
 timeSpan2Millis, millis2TimeSpan
 millis2FitTimeSpan
-bytes2Bits, bits2Bytes
 input2OutputStream, output2InputStream
 inputStream2Bytes, bytes2InputStream
 outputStream2Bytes, bytes2OutputStream
@@ -154,11 +155,13 @@ init
 * ### About Device -> [DeviceUtils.java][device.java] -> [Demo][device.demo]
 ```
 isDeviceRooted
-getSDKVersion
+getSDKVersionName
+getSDKVersionCode
 getAndroidID
 getMacAddress
 getManufacturer
 getModel
+getABIs
 shutdown
 reboot
 reboot2Recovery
@@ -172,7 +175,6 @@ urlDecode
 base64Encode
 base64Encode2String
 base64Decode
-base64UrlSafeEncode
 htmlEncode
 htmlDecode
 ```
@@ -199,6 +201,8 @@ encrypt3DES, encrypt3DES2HexString, encrypt3DES2Base64
 decrypt3DES, decryptHexString3DES, decryptBase64_3DES
 encryptAES, encryptAES2HexString, encryptAES2Base64
 decryptAES, decryptHexStringAES, decryptBase64AES
+encryptRSA, encryptRSA2HexString, encryptRSA2Base64
+decryptRSA, decryptHexStringRSA, decryptBase64RSA
 ```
 
 * ### About FileIO -> [FileIOUtils.java][fileio.java] -> [Test][fileio.test]
@@ -317,7 +321,7 @@ compressBySampleSize
 getInstallAppIntent
 getUninstallAppIntent
 getLaunchAppIntent
-getAppDetailsSettingsIntent
+getLaunchAppDetailsSettingsIntent
 getShareTextIntent
 getShareImageIntent
 getComponentIntent
@@ -332,6 +336,8 @@ hideSoftInput
 toggleSoftInput
 isSoftInputVisible
 registerSoftInputChangedListener
+unregisterSoftInputChangedListener
+fixSoftInputLeaks
 clickBlankArea2HideSoftInput
 ```
 
@@ -346,9 +352,12 @@ Config.setLog2FileSwitch
 Config.setDir
 Config.setFilePrefix
 Config.setBorderSwitch
+Config.setSingleTagSwitch
 Config.setConsoleFilter
 Config.setFileFilter
 Config.setStackDeep
+Config.setStackOffset
+log
 v
 vTag
 d
@@ -390,13 +399,16 @@ getDomainAddress
 isEmpty
 isNotEmpty
 equals
+requireNonNull
+getOrDefault
+hashCode
 ```
 
 * ### About Permission -> [PermissionUtils.java][permission.java] -> [Demo][permission.demo]
 ```
 getPermissions
 isGranted
-openAppSettings
+launchAppDetailsSettings
 permission
 rationale
 callback
@@ -407,7 +419,9 @@ request
 * ### About Phone -> [PhoneUtils.java][phone.java] -> [Demo][phone.demo]
 ```
 isPhone
+getDeviceId
 getIMEI
+getMEID
 getIMSI
 getPhoneType
 isSimCardReady
@@ -418,9 +432,6 @@ dial
 call
 sendSms
 sendSmsSilent
-getAllContactInfo
-getContactNum
-getAllSMS
 ```
 
 * ### About Process -> [ProcessUtils.java][process.java] -> [Demo][process.demo]
@@ -428,6 +439,17 @@ getAllSMS
 getForegroundProcessName
 killAllBackgroundProcesses
 killBackgroundProcesses
+isMainProcess
+getCurrentProcessName
+```
+
+* ### About Reflect -> [ReflectUtils.java][reflect.java] -> [Test][reflect.test]
+```
+reflect
+newInstance
+field
+method
+get
 ```
 
 * ### About Regex -> [RegexUtils.java][regex.java] -> [Test][regex.test]
@@ -448,6 +470,16 @@ getMatches
 getSplits
 getReplaceFirst
 getReplaceAll
+```
+
+* ### About Resource -> [ResourceUtils.java][resource.java] -> [Demo][resource.demo]
+```
+copyFileFromAssets
+readAssets2String
+readAssets2List
+copyFileFromRaw
+readRaw2String
+readRaw2List
 ```
 
 * ### About Screen -> [ScreenUtils.java][screen.java] -> [Demo][screen.demo]
@@ -471,13 +503,15 @@ isTablet
 
 * ### About SDCard -> [SDCardUtils.java][sdcard.java] -> [Demo][sdcard.demo]
 ```
+isSDCardEnableByEnvironment
+getSDCardPathByEnvironment
 isSDCardEnable
 getSDCardPaths
 ```
 
 * ### About Service -> [ServiceUtils.java][service.java]
 ```
-getAllRunningService
+getAllRunningServices
 startService
 stopService
 bindService
@@ -559,16 +593,16 @@ create
 * ### About SP -> [SPUtils.java][sp.java] -> [Demo][sp.demo]
 ```
 getInstance
-put
-getString
-getInt
-getLong
-getFloat
-getBoolean
-getAll
-contains
-remove
-clear
+Instance.put
+Instance.getString
+Instance.getInt
+Instance.getLong
+Instance.getFloat
+Instance.getBoolean
+Instance.getAll
+Instance.contains
+Instance.remove
+Instance.clear
 ```
 
 * ### About String -> [StringUtils.java][string.java] -> [Test][string.test]
@@ -585,6 +619,35 @@ lowerFirstLetter
 reverse
 toDBC
 toSBC
+```
+
+* ### About Thread -> [ThreadUtils.java][thread.java] -> [Test][thread.test]
+```
+isMainThread
+getFixedPool
+getSinglePool
+getCachedPool
+getIoPool
+getCpuPool
+executeByFixed
+executeByFixedWithDelay
+executeByFixedAtFixRate
+executeBySingle
+executeBySingleWithDelay
+executeBySingleAtFixRate
+executeByCached
+executeByCachedWithDelay
+executeByCachedAtFixRate
+executeByIo
+executeByIoWithDelay
+executeByIoAtFixRate
+executeByCpu
+executeByCpuWithDelay
+executeByCpuAtFixRate
+executeByCustom
+executeByCustomWithDelay
+executeByCustomAtFixRate
+cancel
 ```
 
 * ### About Time -> [TimeUtils.java][time.java] -> [Test][time.test]
@@ -613,9 +676,7 @@ isToday
 isLeapYear
 getChineseWeek
 getUSWeek
-getWeekIndex
-getWeekOfMonth
-getWeekOfYear
+getValueByCalendarField
 getChineseZodiac
 getZodiac
 ```
@@ -625,7 +686,8 @@ getZodiac
 setGravity
 setBgColor
 setBgResource
-setMessageColor
+setMsgColor
+setMsgTextSize
 showShort
 showLong
 showCustomShort
@@ -633,8 +695,14 @@ showCustomLong
 cancel
 ```
 
+* ### About Uri -> [UriUtils.java][uri.java]
+```
+getUriForFile
+```
+
 * ### About Zip -> [ZipUtils.java][zip.java] -> [Test][zip.test]
 ```
+zipFiles
 zipFile
 unzipFile
 unzipFileByKeyword
@@ -713,8 +781,14 @@ getComments
 [process.java]: https://github.com/Blankj/AndroidUtilCode/blob/master/utilcode/src/main/java/com/blankj/utilcode/util/ProcessUtils.java
 [process.demo]: https://github.com/Blankj/AndroidUtilCode/blob/master/app/src/main/java/com/blankj/androidutilcode/feature/core/process/ProcessActivity.java
 
+[reflect.java]: https://github.com/Blankj/AndroidUtilCode/blob/master/utilcode/src/main/java/com/blankj/utilcode/util/ReflectUtils.java
+[reflect.test]: https://github.com/Blankj/AndroidUtilCode/blob/master/utilcode/src/test/java/com/blankj/utilcode/util/reflect/ReflectUtilsTest.java
+
 [regex.java]: https://github.com/Blankj/AndroidUtilCode/blob/master/utilcode/src/main/java/com/blankj/utilcode/util/RegexUtils.java
 [regex.test]: https://github.com/Blankj/AndroidUtilCode/blob/master/utilcode/src/test/java/com/blankj/utilcode/util/RegexUtilsTest.java
+
+[resource.java]: https://github.com/Blankj/AndroidUtilCode/blob/master/utilcode/src/main/java/com/blankj/utilcode/util/ResourceUtils.java
+[resource.demo]: https://github.com/Blankj/AndroidUtilCode/blob/master/app/src/main/java/com/blankj/androidutilcode/feature/core/resource/ResourceActivity.java
 
 [screen.java]: https://github.com/Blankj/AndroidUtilCode/blob/master/utilcode/src/main/java/com/blankj/utilcode/util/ScreenUtils.java
 [screen.demo]: https://github.com/Blankj/AndroidUtilCode/blob/master/app/src/main/java/com/blankj/androidutilcode/feature/core/screen/ScreenActivity.java
@@ -740,11 +814,16 @@ getComments
 [string.java]: https://github.com/Blankj/AndroidUtilCode/blob/master/utilcode/src/main/java/com/blankj/utilcode/util/StringUtils.java
 [string.test]: https://github.com/Blankj/AndroidUtilCode/blob/master/utilcode/src/test/java/com/blankj/utilcode/util/StringUtilsTest.java
 
+[thread.java]: https://github.com/Blankj/AndroidUtilCode/blob/master/utilcode/src/main/java/com/blankj/utilcode/util/ThreadUtils.java
+[thread.test]: https://github.com/Blankj/AndroidUtilCode/blob/master/utilcode/src/test/java/com/blankj/utilcode/util/ThreadUtilsTest.java
+
 [time.java]: https://github.com/Blankj/AndroidUtilCode/blob/master/utilcode/src/main/java/com/blankj/utilcode/util/TimeUtils.java
 [time.test]: https://github.com/Blankj/AndroidUtilCode/blob/master/utilcode/src/test/java/com/blankj/utilcode/util/TimeUtilsTest.java
 
 [toast.java]: https://github.com/Blankj/AndroidUtilCode/blob/master/utilcode/src/main/java/com/blankj/utilcode/util/ToastUtils.java
 [toast.demo]: https://github.com/Blankj/AndroidUtilCode/blob/master/app/src/main/java/com/blankj/androidutilcode/feature/core/toast/ToastActivity.java
+
+[uri.java]: https://github.com/Blankj/AndroidUtilCode/blob/master/utilcode/src/main/java/com/blankj/utilcode/util/UriUtils.java
 
 [zip.java]: https://github.com/Blankj/AndroidUtilCode/blob/master/utilcode/src/main/java/com/blankj/utilcode/util/ZipUtils.java
 [zip.test]: https://github.com/Blankj/AndroidUtilCode/blob/master/utilcode/src/test/java/com/blankj/utilcode/util/ZipUtilsTest.java

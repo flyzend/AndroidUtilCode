@@ -16,7 +16,7 @@ import static junit.framework.TestCase.assertTrue;
  *     author: Blankj
  *     blog  : http://blankj.com
  *     time  : 2016/09/10
- *     desc  : ZipUtils 单元测试
+ *     desc  : test ZipUtils
  * </pre>
  */
 public class ZipUtilsTest {
@@ -60,7 +60,7 @@ public class ZipUtilsTest {
     }
 
     @After
-    public void tearDown() throws Exception {
+    public void tearDown() {
         FileUtils.deleteAllInDir(PATH_TEMP);
     }
 }

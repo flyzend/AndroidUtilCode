@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.view.View;
 import android.view.Window;
@@ -13,11 +14,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.blankj.androidutilcode.Config;
+import com.blankj.androidutilcode.MainActivity;
 import com.blankj.androidutilcode.R;
 import com.blankj.androidutilcode.base.BaseBackActivity;
 import com.blankj.androidutilcode.feature.core.CoreUtilActivity;
-import com.blankj.androidutilcode.MainActivity;
 import com.blankj.utilcode.util.ActivityUtils;
+import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.SpanUtils;
 
 import java.util.Random;
@@ -27,7 +29,7 @@ import java.util.Random;
  *     author: Blankj
  *     blog  : http://blankj.com
  *     time  : 2016/10/13
- *     desc  : Activity 工具类 Demo
+ *     desc  : demo about ActivityUtils
  * </pre>
  */
 public class ActivityActivity extends BaseBackActivity {
@@ -44,7 +46,7 @@ public class ActivityActivity extends BaseBackActivity {
     }
 
     @Override
-    public void initData(Bundle bundle) {
+    public void initData(@Nullable Bundle bundle) {
 
     }
 
@@ -58,7 +60,7 @@ public class ActivityActivity extends BaseBackActivity {
 
 
     @Override
-    public void initView(Bundle savedInstanceState, View view) {
+    public void initView(Bundle savedInstanceState, View contentView) {
         getToolBar().setTitle(getString(R.string.demo_activity));
         viewSharedElement = findViewById(R.id.view_shared_element);
         findViewById(R.id.btn_clz).setOnClickListener(this);
@@ -92,16 +94,15 @@ public class ActivityActivity extends BaseBackActivity {
         findViewById(R.id.btn_finish_all_activities).setOnClickListener(this);
         TextView tvAboutActivity = findViewById(R.id.tv_about_activity);
         tvAboutActivity.setText(new SpanUtils()
-                .appendLine("Is SubActivityActivity Exists: " + ActivityUtils.isActivityExists(Config.PKG, SubActivityActivity.class.getName()))
+                .appendLine("isActivityExists: " + ActivityUtils.isActivityExists(Config.PKG, SubActivityActivity.class.getName()))
                 .appendLine("getLauncherActivity: " + ActivityUtils.getLauncherActivity(Config.PKG))
                 .appendLine("getTopActivity: " + ActivityUtils.getTopActivity())
-                .appendLine("getTopActivity: " + ActivityUtils.getTopActivity())
-                .appendLine("Is CoreUtilActivity Exists In Stack: " + ActivityUtils.isActivityExistsInStack(CoreUtilActivity.class))
+                .appendLine("isActivityExistsInStack: " + ActivityUtils.isActivityExistsInStack(CoreUtilActivity.class))
                 .append("getActivityIcon: ")
-                .appendImage(ActivityUtils.getActivityIcon(ActivityActivity.class), SpanUtils.ALIGN_CENTER)
+                .appendImage(ActivityUtils.getActivityIcon(this), SpanUtils.ALIGN_CENTER)
                 .appendLine()
                 .append("getActivityLogo: ")
-                .appendImage(ActivityUtils.getActivityLogo(ActivityActivity.class), SpanUtils.ALIGN_CENTER)
+                .appendImage(ActivityUtils.getActivityLogo(this), SpanUtils.ALIGN_CENTER)
                 .create()
         );
         bitmap = ((BitmapDrawable) viewSharedElement.getDrawable()).getBitmap();
@@ -225,7 +226,7 @@ public class ActivityActivity extends BaseBackActivity {
             case R.id.btn_act_intents_opt:
                 ActivityUtils.startActivities(this,
                         intents,
-                        getOption(random.nextInt(3)));
+                        getOption(random.nextInt(5)));
                 break;
             case R.id.btn_act_intents_anim:
                 ActivityUtils.startActivities(this,
@@ -248,8 +249,8 @@ public class ActivityActivity extends BaseBackActivity {
     }
 
     private Bundle getOption(int type) {
+        LogUtils.d(type);
         switch (type) {
-            default:
             case 0:
                 return ActivityOptionsCompat.makeCustomAnimation(this,
                         R.anim.slide_in_right_1000,
@@ -267,16 +268,18 @@ public class ActivityActivity extends BaseBackActivity {
                         0, 0)
                         .toBundle();
             case 3:
+                return ActivityOptionsCompat.makeSceneTransitionAnimation(this,
+                        viewSharedElement,
+                        getString(R.string.activity_shared_element))
+                        .toBundle();
+            case 4:
                 return ActivityOptionsCompat.makeClipRevealAnimation(viewSharedElement,
                         viewSharedElement.getWidth() / 2,
                         viewSharedElement.getHeight() / 2,
                         0, 0)
                         .toBundle();
-            case 4:
-                return ActivityOptionsCompat.makeSceneTransitionAnimation(this,
-                        viewSharedElement,
-                        getString(R.string.activity_shared_element))
-                        .toBundle();
+            default:
+                return null;
         }
     }
 }

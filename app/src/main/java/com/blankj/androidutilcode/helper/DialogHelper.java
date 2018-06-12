@@ -18,7 +18,7 @@ import com.blankj.utilcode.util.PermissionUtils.OnRationaleListener.ShouldReques
  *     author: Blankj
  *     blog  : http://blankj.com
  *     time  : 2018/01/10
- *     desc  : 对话框工具类
+ *     desc  : helper about dialog
  * </pre>
  */
 public class DialogHelper {
@@ -56,7 +56,7 @@ public class DialogHelper {
                 .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        PermissionUtils.openAppSettings();
+                        PermissionUtils.launchAppDetailsSettings();
                     }
                 })
                 .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {

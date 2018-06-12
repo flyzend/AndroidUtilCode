@@ -12,6 +12,7 @@ import android.graphics.Matrix;
 import android.graphics.Shader;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.text.Layout;
 import android.text.SpannableStringBuilder;
@@ -32,7 +33,7 @@ import com.blankj.utilcode.util.ToastUtils;
  *     author: Blankj
  *     blog  : http://blankj.com
  *     time  : 2016/09/27
- *     desc  : Span 工具类 Demo
+ *     desc  : demo about SpanUtils
  * </pre>
  */
 public class SpanActivity extends BaseBackActivity {
@@ -61,8 +62,6 @@ public class SpanActivity extends BaseBackActivity {
     float    density;
     TextView tvAboutSpan;
     TextView tvAboutAnimRainbow;
-    TextView tvAboutSpan1;
-    TextView tvAboutAnimRainbow1;
 
     public static void start(Context context) {
         Intent starter = new Intent(context, SpanActivity.class);
@@ -70,7 +69,7 @@ public class SpanActivity extends BaseBackActivity {
     }
 
     @Override
-    public void initData(Bundle bundle) {
+    public void initData(@Nullable Bundle bundle) {
 
     }
 
@@ -80,7 +79,7 @@ public class SpanActivity extends BaseBackActivity {
     }
 
     @Override
-    public void initView(Bundle savedInstanceState, View view) {
+    public void initView(Bundle savedInstanceState, View contentView) {
         getToolBar().setTitle(getString(R.string.demo_span));
 
         ClickableSpan clickableSpan = new ClickableSpan() {
@@ -109,6 +108,7 @@ public class SpanActivity extends BaseBackActivity {
 
         initAnimSpan();
         startAnim();
+
 
         tvAboutSpan.setText(new SpanUtils()
                 .appendLine("SpanUtils").setBackgroundColor(Color.LTGRAY).setBold().setForegroundColor(Color.YELLOW).setAlign(Layout.Alignment.ALIGN_CENTER)
@@ -143,7 +143,7 @@ public class SpanActivity extends BaseBackActivity {
                         getResources().getIntArray(R.array.rainbow),
                         null,
                         Shader.TileMode.REPEAT)).setFontSize(64, true)
-                .appendLine("图片着色").setFontSize(64, true).setShader(new BitmapShader(BitmapFactory.decodeResource(getResources(), R.drawable.cheetah),
+                .appendLine("图片着色").setFontSize(64, true).setShader(new BitmapShader(BitmapFactory.decodeResource(getResources(), R.drawable.span_cheetah),
                         Shader.TileMode.REPEAT,
                         Shader.TileMode.REPEAT))
                 .appendLine("阴影效果").setFontSize(64, true).setBackgroundColor(Color.BLACK).setShadow(24, 8, 8, Color.WHITE)
